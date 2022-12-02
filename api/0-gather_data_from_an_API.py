@@ -7,12 +7,13 @@ if __name__ == '__main__':
     from sys import argv
 
     rq_users = get('https://jsonplaceholder.typicode.com/users/{}'.
-                   format(argv[1])).json()
+                   format(argv[1]))
 
-    rq_name = rq_users.get('name')
+    rq_name = rq_users.json().get('name')
 
-    rq_data = get('https://jsonplaceholder.typicode.com/todos?userId={}'.
-                  format(argv[1])).json()
+    rq_id = get('https://jsonplaceholder.typicode.com/todos?userId={}'.
+                  format(argv[1]))
+    rq_data = rq_id.json()
 
     done = total = 0
 
