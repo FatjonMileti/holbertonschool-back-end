@@ -2,30 +2,29 @@
 ''' *** *** '''
 
 
-if __name__ == '__main__':
-    from requests import get
-    from sys import argv
+if __name__ == "__main__":
+    response = get('https://jsonplaceholder.typicode.com/todos/')
+    data = response.json()
+    completed = 0
+    total = 0
+    tasks = []
+    response2 = get('https://jsonplaceholder.typicode.com/users/')
+    data2 = response2.json()
 
-    rq = get('https://jsonplaceholder.typicode.com/users/')
-    rq_name = rq.json()
-
-    rq = get('https://jsonplaceholder.typicode.com/todos/')
-    rq_data = rq.json()
-
-    done = total = 0
-
-    for i in rq_name:
+    for i in data2:
         if i.get('id') == int(argv[1]):
             employee = i.get('name')
-    
-    for task in rq_data:
-        if task.get('userId') == int(argv[1]):
-            total += 1
-            if task.get('completed'):
-                done += 1
 
-    print('Employee {} is done with tasks({}/{}):'.
-          format(rq_name, done, total))
-    for task in rq_data:
-        if task.get('completed'):
-            print('\t {}'.format(task.get('title')))
+    for i in data:
+        if i.get('userId') == int(argv[1]):
+            total += 1
+
+            if i.get('completed') is True:
+                completed += 1
+                tasks.append(i.get('title'))
+
+    print("Employee {} is done with tasks({}/{}):".format(employee,
+                                                          completed, total))
+
+    for i in tasks:
+        print("\t {}".format(i))
