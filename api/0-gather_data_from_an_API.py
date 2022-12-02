@@ -3,7 +3,7 @@
 
 
 if __name__ == '__main__':
-    from requestsi import get
+    from requests import get
     from sys import argv
 
     rq = get('https://jsonplaceholder.typicode.com/users/{}'.
