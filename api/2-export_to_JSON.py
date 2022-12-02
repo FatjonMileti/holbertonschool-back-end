@@ -1,23 +1,27 @@
 #!/usr/bin/python3
-"""Importing requests module"""
-import json
-import requests
-from sys import argv
+''' *** *** '''
 
+if __name__ == '__main__':
+    import requests
+    import json
+    from sys import argv
 
-if __name__ == "__main__":
-    url = "https://jsonplaceholder.typicode.com"
-    usr = requests.get("{}/users/{}".format(url, argv[1]))
-    todo_url = requests.get("{}/todos?userId={}".format(url, argv[1]))
-    employee_username = usr.json()
-    todos_of_employee = todo_url.json()
-    new_data = []
-    for task in todos_of_employee:
-        new_data.append({
-            "task": task['title'],
-            "completed": task['completed'],
-            "username": employee_username['username']
-            })
-    data_json = {argv[1]: new_data}
-    with open(str(argv[1]) + '.json', 'w') as f:
-        json.dump(data_json, f)
+    rq = requests.get('https://jsonplaceholder.typicode.com/users/{}'.
+                      format(argv[1]))
+    rqname = rq.json().get('username')
+
+    rq = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'.
+                      format(argv[1]))
+    rqdata = rq.json()
+
+    export = {}
+    export['{}'.format(argv[1])] = []
+    for task in rqdata:
+        export['{}'.format(argv[1])].append({
+            'task': task.get('title'),
+            'completed': task.get('completed'),
+            'username': rqname
+        })
+
+    with open('{}.json'.format(argv[1]), 'w') as outfile:
+        json.dump(export, outfile)
