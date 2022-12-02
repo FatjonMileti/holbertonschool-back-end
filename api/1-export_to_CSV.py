@@ -1,31 +1,24 @@
 #!/usr/bin/python3
-"""Python script to export data in the CSV format"""
+"""
+Task 1 - extend your Python script to export data in the CSV format.
+"""
 
-from requests import get
-from sys import argv
-import csv
+if __name__ == '__main__':
+    import requests
+    import csv
+    from sys import argv
 
-if __name__ == "__main__":
-    response = get('https://jsonplaceholder.typicode.com/todos/')
-    data = response.json()
+    rq = requests.get('https://jsonplaceholder.typicode.com/users/{}'.
+                      format(argv[1]))
+    rqname = rq.json().get('username')
 
-    row = []
-    response2 = get('https://jsonplaceholder.typicode.com/users/')
-    data2 = response2.json()
+    rq = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'.
+                      format(argv[1]))
+    rqdata = rq.json()
 
-    for i in data2:
-        if i['id'] == int(argv[1]):
-            employee = i['username']
-
-    with open(argv[1] + '.csv', 'w', newline='') as file:
-        _write = csv.writer(file, quoting=csv.QUOTE_ALL)
-
-        for i in data:
-            row = []
-            if i['userId'] == int(argv[1]):
-                row.append(i['userId'])
-                row.append(employee)
-                row.append(i['completed'])
-                row.append(i['title'])
-
-                _write.writerow(row)
+    with open('{}.csv'.format(argv[1]), mode='w') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"',
+                                quoting=csv.QUOTE_ALL)
+        for task in rqdata:
+            csv_writer.writerow([argv[1], rqname, task.get('completed'),
+                                 task.get('title')])
