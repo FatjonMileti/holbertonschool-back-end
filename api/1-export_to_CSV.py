@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Task 1 - extend your Python script to export data in the CSV format.
-"""
+''' *** *** '''
 
 if __name__ == '__main__':
     import requests
